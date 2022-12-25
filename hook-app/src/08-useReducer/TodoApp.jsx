@@ -1,54 +1,18 @@
-import { useEffect } from "react";
-import { useReducer } from "react";
+
+import { useTodos } from "../hooks/useTodos";
 import { TodoAdd } from "./TodoAdd";
 import { TodoList } from "./TodoList";
-import { todoReducer } from "./todoReducer";
 
-const initialState = [
-  // {
-  //   id: new Date().getTime(),
-  //   description: "Recolectar la piedra del alma",
-  //   done: false,
-  // }
-];
-
-const init = () => {
-  return JSON.parse(localStorage.getItem("todos")) || [];
-};
 
 export const TodoApp = () => {
-  const [todos, dispatch] = useReducer(todoReducer, initialState);
 
-  useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
+  const {todos, todosCount, pendingTodosCount, handleDeleteTodo,handleToggleTodo, handleNewTodo} = useTodos();
 
-  const handleNewTodo = (todo) => {
-    const action = {
-      type: "[TODO] Add Todo",
-      payload: todo,
-    };
-
-    dispatch(action);
-  };
-
-  const handleDeleteTodo = (id) => {
-    dispatch({
-      type: "[TODO] Delete Todo",
-      payload: id,
-    });
-  };
-
-  const handleToggleTodo = (id) => {
-    dispatch({
-      type: "[TODO] Toggle Todo",
-      payload: id,
-    });
-  };
+  
   return (
     <>
       <h1>
-        TodoApp: 10, <small>pendientes:2</small>{" "}
+        TodoApp: {todosCount}, <small>pendientes:{pendingTodosCount}</small>{" "}
       </h1>
       <hr />
 
